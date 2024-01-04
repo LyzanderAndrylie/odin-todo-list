@@ -35,7 +35,14 @@ module.exports = {
         test: /\.css$/i,
         use: [
           isProductionMode ? MiniCssExtractPlugin.loader : 'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]',
+              },
+            },
+          },
           'postcss-loader',
         ],
       },
@@ -52,7 +59,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
-        "@": path.resolve(__dirname, "src/")
+      '@': path.resolve(__dirname, 'src/'),
     },
   },
 };

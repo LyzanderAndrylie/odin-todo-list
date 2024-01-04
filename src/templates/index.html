@@ -5,5 +5,290 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body
+    class="grid h-screen grid-cols-[256px_1fr] grid-rows-[70px_1fr] font-roboto"
+  >
+    <header
+      class="col-span-2 flex items-center justify-center p-4 font-norse-bold text-2xl font-bold"
+    >
+      <img
+        class="w-14"
+        src="<%= require('../assets/images/odin-logo.png') %>"
+        alt="Odin Logo"
+      />
+      Odin Todo List
+    </header>
+    <aside class="flex h-full flex-col">
+      <div class="flex-1">
+        <div class="p-4 hover:bg-tussock-500 hover:text-white">Today</div>
+        <div class="p-4 hover:bg-tussock-500 hover:text-white">Upcoming</div>
+        <div class="mb-2 p-4 hover:bg-tussock-500 hover:text-white">
+          Archived
+        </div>
+        <hr class="mx-auto mb-2 w-[90%] border-tussock-400" />
+        <details class="mb-1 p-4" open>
+          <summary class="mb-2">My Projects</summary>
+          <div class="max-h-80 overflow-y-auto">
+            <ul>
+              <li
+                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
+              >
+                All
+              </li>
+              <li
+                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
+              >
+                # Project Tag 1
+              </li>
+              <li
+                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
+              >
+                # Project Tag 2
+              </li>
+              <li
+                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
+              >
+                # Project Tag 3
+              </li>
+            </ul>
+            <form class="" method="post">
+              <div class="flex">
+                <input
+                  type="text"
+                  class="w-full rounded-l-xl border border-slate-200 bg-slate-50 p-1"
+                  placeholder="New Project Name"
+                />
+                <button
+                  type="submit"
+                  class="bg-emerald-600 p-1 hover:bg-emerald-700"
+                >
+                  <svg
+                    class="h-6 w-6 fill-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <title>add</title>
+                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="rounded-r-xl bg-red-600 p-1 hover:bg-red-700"
+                >
+                  <svg
+                    class="h-6 w-6 fill-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <title>delete</title>
+                    <path
+                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </details>
+      </div>
+      <div class="flex">
+        <button
+          type="button"
+          class="flex flex-1 items-center gap-2 bg-tussock-500 p-2 text-white hover:bg-tussock-600 active:bg-tussock-700"
+        >
+          <svg
+            class="h-10 w-10 fill-white"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+            />
+          </svg>
+          Add Project
+        </button>
+      </div>
+    </aside>
+    <main
+      class="overflow-y-auto rounded-tl-2xl border border-slate-200 bg-slate-100 p-4"
+    >
+      <div class="mb-2 flex items-center justify-between gap-2 p-4">
+        <span class="project-title text-xl font-semibold">All</span>
+        <svg
+          class="h-7 w-7 rounded-full hover:bg-tussock-400 hover:fill-white active:bg-tussock-500"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <title>add</title>
+          <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+        </svg>
+      </div>
+      <div
+        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
+      >
+        <div class="row-span-2 self-center justify-self-center">
+          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
+        </div>
+        <div class="">Title</div>
+        <div
+          class="w-24 self-center justify-self-end rounded-xl bg-red-600 text-center text-sm text-white"
+        >
+          High
+        </div>
+        <div class="text-sm">Due Date</div>
+        <div class="text-sm"># Project Tag 1</div>
+      </div>
+      <div
+        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
+      >
+        <div class="row-span-2 self-center justify-self-center">
+          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
+        </div>
+        <div class="">Title</div>
+        <div
+          class="w-24 self-center justify-self-end rounded-xl bg-amber-500 text-center text-sm text-white"
+        >
+          Medium
+        </div>
+        <div class="text-sm">Due Date</div>
+        <div class="text-sm"># Project Tag 2</div>
+      </div>
+      <div
+        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
+      >
+        <div class="row-span-2 self-center justify-self-center">
+          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
+        </div>
+        <div class="">Title</div>
+        <div
+          class="w-24 self-center justify-self-end rounded-xl bg-green-600 text-center text-sm text-white"
+        >
+          Low
+        </div>
+        <div class="text-sm">Due Date</div>
+        <div class="text-sm"># Project Tag 3</div>
+      </div>
+    </main>
+  </body>
+  <!-- Form Dialog -->
+  <dialog
+    id="add-project-dialog"
+    class="w-72 rounded-xl p-4 backdrop:bg-slate-400 backdrop:bg-opacity-60"
+  >
+    <form id="add-project-form">
+      <h1 class="mb-6 text-center text-xl font-bold">Add Project</h1>
+      <div class="mb-2">
+        <label class="block" for="title">Title</label>
+        <input
+          class="w-full rounded border border-slate-200 bg-slate-50"
+          type="text"
+          name="title"
+          id="title"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="block" for="due-date">Due Date</label>
+        <input
+          class="w-full rounded border border-slate-200 bg-slate-50"
+          type="datetime-local"
+          name="due-date"
+          id="due-date"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="block" for="priority">Priority</label>
+        <select
+          name="priority"
+          id="priority"
+          class="w-full border border-slate-200 bg-slate-50"
+        >
+          <option value="HIGH">High</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="LOW">Low</option>
+        </select>
+      </div>
+      <div class="mb-2">
+        <label class="block" for="description">Description</label>
+        <textarea
+          name="description"
+          id="description"
+          class="h-32 w-full border border-slate-200 bg-slate-50 p-2"
+          placeholder="Optional description about your project"
+        ></textarea>
+      </div>
+      <div class="flex gap-4">
+        <button
+          class="add flex-1 rounded-xl bg-tussock-500 p-1 text-white hover:bg-tussock-600 active:bg-tussock-700"
+          type="submit"
+          formmethod="post"
+        >
+          Add
+        </button>
+        <button
+          class="cancel flex-1 rounded-xl border border-tussock-700 p-1 text-tussock-700 hover:bg-tussock-50 active:bg-tussock-100"
+          type="submit"
+          formmethod="dialog"
+          formnovalidate
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </dialog>
+  <!-- Activity Dialog -->
+  <dialog
+    id="project-dialog"
+    class="w-[50vw] rounded-xl p-4 backdrop:bg-slate-400 backdrop:bg-opacity-60"
+  >
+    <form
+      class="project rounded-xl border border-tussock-400 bg-tussock-50 p-2"
+    >
+      <div class="title mb-4 text-center text-xl font-bold">Title</div>
+      <div class="mb-4 flex justify-center gap-4">
+        <div class="text-center">
+          <span class="font-bold">Due Date: </span
+          ><span class="due-date whitespace-nowrap">Due Date</span>
+        </div>
+        <div>|</div>
+        <div class="text-center">
+          <span class="font-bold">Priority: </span
+          ><span class="priority rounded-md border border-tussock-500 p-1"
+            >Priority</span
+          >
+        </div>
+        <div>|</div>
+        <div class="text-center">
+          <span class="font-bold">Status: </span
+          ><span class="status rounded-md border border-tussock-500 p-1"
+            >Status</span
+          >
+        </div>
+      </div>
+      <div class="mb-4">
+        <span class="font-bold"> Description: </span>
+        <span class="description block rounded-md border border-tussock-500 p-2"
+          >Test</span
+        >
+      </div>
+      <div class="flex gap-4">
+        <button
+          class="archive flex-1 rounded-xl bg-tussock-500 p-1 text-white hover:bg-tussock-600 active:bg-tussock-700"
+          type="submit"
+          formmethod="post"
+        >
+          Archive
+        </button>
+        <button
+          class="close flex-1 rounded-xl border border-tussock-700 p-1 text-tussock-700 hover:bg-tussock-50 active:bg-tussock-100"
+          type="submit"
+          formmethod="dialog"
+          formnovalidate
+        >
+          Back
+        </button>
+      </div>
+    </form>
+  </dialog>
 </html>
