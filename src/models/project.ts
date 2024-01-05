@@ -1,7 +1,7 @@
 import { Task } from './task';
 
 export type Project = {
-  id: number;
+  uuid: string;
   name: string;
   tasks: Task[];
 };

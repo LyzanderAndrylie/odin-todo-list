@@ -1,4 +1,11 @@
-import { ToDoManager, ToDoManagerImpl, Task, dummyProjects, dummyTasks } from '@/models';
+import {
+  ToDoManager,
+  ToDoManagerImpl,
+  Task,
+  dummyProjects,
+  dummyTasks,
+  Project,
+} from '@/models';
 import { View, ViewImpl } from '@/views';
 import Controller from './controller';
 
@@ -11,8 +18,8 @@ export default class ControllerImpl implements Controller {
     this.toDoManager = new ToDoManagerImpl();
     this.toDoManager.projects = dummyProjects;
     this.toDoManager.tasks = dummyTasks;
-    
-    this.view = new ViewImpl(this, this.toDoManager);
+
+    this.view = new ViewImpl(this);
     this.view.createView();
   }
 
@@ -21,17 +28,41 @@ export default class ControllerImpl implements Controller {
     this.view.refresh();
   }
 
-  addTaskToProject(dto: Omit<Task, 'id'>, projectId: number): void {
-    this.toDoManager.createTaskToProject(dto, projectId);
+  addTaskToProject(dto: Omit<Task, 'id'>, projectUUID: string): void {
+    this.toDoManager.createTaskToProject(dto, projectUUID);
     this.view.refresh();
   }
 
-  setCompletedForTask(id: number, completed: boolean): void {
-    this.toDoManager.setCompletedForTask(id, completed);
+  setCompletedForTask(uuid: string, completed: boolean): void {
+    this.toDoManager.setCompletedForTask(uuid, completed);
   }
 
-  setArchivedForTask(id: number, archived: boolean): void {
-    this.toDoManager.setCompletedForTask(id, archived);
+  setArchivedForTask(uuid: string, archived: boolean): void {
+    this.toDoManager.setArchivedForTask(uuid, archived);
     this.view.refresh();
+  }
+
+  findAllProject(): Project[] {
+    return this.toDoManager.findAllProject();
+  }
+
+  findAllTask(): Task[] {
+    return this.toDoManager.findAllTask();
+  }
+
+  findAllTaskInProject(projectUUID: string): Task[] {
+    return this.toDoManager.findAllTaskInProject(projectUUID);
+  }
+
+  findProject(projectUUID: string): Project {
+    return this.toDoManager.findProject(projectUUID);
+  }
+
+  findTask(uuid: string): Task {
+      return this.toDoManager.findTask(uuid);
+  }
+
+  getDefaultProject(): Project {
+      return this.toDoManager.defaultProject;
   }
 }

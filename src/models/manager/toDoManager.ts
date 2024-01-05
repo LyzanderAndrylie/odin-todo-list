@@ -2,25 +2,26 @@ import { Project } from '../project';
 import { Task } from '../task';
 
 export default interface ToDoManager {
-  projects: Project[];
-  tasks: Task[]
+  defaultProject: Project;
+  projects: Map<string, Project>;
+  tasks: Map<string, Task>
 
   createProject(name: string): Project;
-  findProject(id: number): Project;
+  findProject(uuid: string): Project;
   findAllProject(): Project[];
   findAllProjectTag(): string[];
 
-  createTaskToProject(dto: Omit<Task, 'id'>, projectId: number): Task;
-  findTask(id: number): Task;
+  createTaskToProject(dto: Omit<Task, 'uuid'>, projectUUID: string): Task;
+  findTask(uuid: string): Task;
   findAllTask(): Task[];
-  findAllTaskInProject(projectId: number): Task[];
+  findAllTaskInProject(projectUUID: string): Task[];
 
   setCompletedForTask(
-    id: number,
+    uuid: string,
     completed: boolean,
   ): void;
   setArchivedForTask(
-    id: number,
+    uuid: string,
     completed: boolean,
   ): void;
 }

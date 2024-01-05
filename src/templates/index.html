@@ -30,14 +30,19 @@
           <summary class="mb-2">My Projects</summary>
           <div class="h-[525px] overflow-y-auto">
             <ul id="project-list"></ul>
-            <form class="" method="post">
+            <form id="form-add-project" class="hidden" method="post">
               <div class="flex">
                 <input
+                  id="form-add-project-input"
                   type="text"
                   class="w-full rounded-l-xl border border-slate-200 bg-slate-50 p-1"
                   placeholder="New Project Name"
+                  autocomplete="off"
+                  autofocus
+                  required
                 />
                 <button
+                  id="form-add-project-add"
                   type="submit"
                   class="bg-emerald-600 p-1 hover:bg-emerald-700"
                 >
@@ -51,6 +56,7 @@
                   </svg>
                 </button>
                 <button
+                  id="form-add-project-delete"
                   type="button"
                   class="rounded-r-xl bg-red-600 p-1 hover:bg-red-700"
                 >
@@ -72,6 +78,7 @@
       </div>
       <div class="flex">
         <button
+          id="btn-add-project"
           type="button"
           class="flex flex-1 items-center gap-2 bg-tussock-500 p-2 text-white hover:bg-tussock-600 active:bg-tussock-700"
         >
@@ -94,6 +101,7 @@
       <div class="mb-2 flex items-center justify-between gap-2 p-4">
         <span id="project-title" class="text-xl font-semibold">All</span>
         <svg
+          id="svg-add-task"
           class="h-7 w-7 rounded-full hover:bg-tussock-400 hover:fill-white active:bg-tussock-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -105,13 +113,13 @@
       <div id="task-list"></div>
     </main>
   </body>
-  <!-- Form Dialog -->
+  <!-- Task Form Dialog -->
   <dialog
-    id="add-project-dialog"
-    class="w-72 rounded-xl p-4 backdrop:bg-slate-400 backdrop:bg-opacity-60"
+    id="dialog-add-task"
+    class="rounded-xl p-4 [width:clamp(280px,50vw,400px)] backdrop:bg-slate-400 backdrop:bg-opacity-60"
   >
-    <form id="add-project-form">
-      <h1 class="mb-6 text-center text-xl font-bold">Add Project</h1>
+    <form id="form-add-task">
+      <h1 class="mb-6 text-center text-xl font-bold">Add Task</h1>
       <div class="mb-2">
         <label class="block" for="title">Title</label>
         <input
@@ -138,10 +146,11 @@
           name="priority"
           id="priority"
           class="w-full border border-slate-200 bg-slate-50"
+          required
         >
-          <option value="HIGH">High</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="LOW">Low</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
         </select>
       </div>
       <div class="mb-2">
@@ -149,12 +158,22 @@
         <textarea
           name="description"
           id="description"
-          class="h-32 w-full border border-slate-200 bg-slate-50 p-2"
+          class="h-32 w-full overflow-y-scroll border border-slate-200 bg-slate-50 p-2"
           placeholder="Optional description about your project"
         ></textarea>
       </div>
+      <div class="mb-4">
+        <label class="block" for="project-tag">Project Tag</label>
+        <select
+          name="project-tag"
+          id="project-tag"
+          class="w-full border border-slate-200 bg-slate-50"
+          required
+        ></select>
+      </div>
       <div class="flex gap-4">
         <button
+          id="btn-add-task"
           class="add flex-1 rounded-xl bg-tussock-500 p-1 text-white hover:bg-tussock-600 active:bg-tussock-700"
           type="submit"
           formmethod="post"
@@ -172,40 +191,43 @@
       </div>
     </form>
   </dialog>
-  <!-- Activity Dialog -->
+  <!-- Task Dialog -->
   <dialog
-    id="project-dialog"
-    class="w-[50vw] rounded-xl p-4 backdrop:bg-slate-400 backdrop:bg-opacity-60"
+    id="task-dialog"
+    class="w-[50vw] rounded-xl backdrop:bg-slate-400 backdrop:bg-opacity-60"
   >
     <form
-      class="project rounded-xl border border-tussock-400 bg-tussock-50 p-2"
+      id="form-task"
+      class="rounded-xl border border-tussock-400 bg-tussock-50 p-2"
     >
-      <div class="title mb-4 text-center text-xl font-bold">Title</div>
+      <div id="task-title" class="mb-4 text-center text-xl font-bold">
+        Title
+      </div>
       <div class="mb-4 flex justify-center gap-4">
         <div class="text-center">
           <span class="font-bold">Due Date: </span
-          ><span class="due-date whitespace-nowrap">Due Date</span>
+          ><span id="task-due-date"></span>
         </div>
         <div>|</div>
         <div class="text-center">
           <span class="font-bold">Priority: </span
-          ><span class="priority rounded-md border border-tussock-500 p-1"
-            >Priority</span
-          >
+          ><span id="task-priority" class="rounded-md border p-1"></span>
         </div>
         <div>|</div>
         <div class="text-center">
           <span class="font-bold">Status: </span
-          ><span class="status rounded-md border border-tussock-500 p-1"
-            >Status</span
-          >
+          ><span
+            id="task-status"
+            class="rounded-md border border-tussock-500 p-1"
+          ></span>
         </div>
       </div>
       <div class="mb-4">
         <span class="font-bold"> Description: </span>
-        <span class="description block rounded-md border border-tussock-500 p-2"
-          >Test</span
-        >
+        <span
+          id="task-description"
+          class="max-h-92 block h-32 overflow-y-auto rounded-md border border-tussock-500 p-2"
+        ></span>
       </div>
       <div class="flex gap-4">
         <button

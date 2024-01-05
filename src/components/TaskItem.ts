@@ -3,7 +3,7 @@ import { htmlToElement } from '@/utils/converter';
 import MyElement from './MyElement';
 
 export default class TaskItem implements MyElement {
-  private task: Task;
+  task: Task;
 
   constructor(task: Task) {
     this.task = task;
@@ -18,17 +18,17 @@ export default class TaskItem implements MyElement {
     const priorityColor = priorityColorList[this.task.priority];
 
     const htmlString = `
-    <div data-id="${
-      this.task.id
+    <div data-uuid="${
+      this.task.uuid
     }" class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white">
       <div class="row-span-2 self-center justify-self-center">
-        <input type="checkbox" data-id="${
-          this.task.id
-        }" class="h-6 w-6 accent-emerald-600" ${
+        <input type="checkbox" data-uuid="${
+          this.task.uuid
+        }" class="h-7 w-7 accent-emerald-600" ${
           this.task.completed ? 'checked' : ''
         }>
       </div>
-      <div>${this.task.title}</div>
+      <div class="self-center justify-items-center">${this.task.title}</div>
       <div class="w-24 self-center justify-self-end rounded-xl ${priorityColor} text-center text-sm text-white">
         ${this.task.priority}
       </div>

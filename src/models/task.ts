@@ -1,9 +1,11 @@
+export type TaskPriority = 'Low' | 'Medium' | 'High';
+
 export type Task = {
-  id: number;
+  uuid: string;
   title: string;
   description: string;
   dueDate: Date;
-  priority: 'Low' | 'Medium' | 'High';
+  priority: TaskPriority;
   completed: boolean;
   archived: boolean;
   projectTag: string;
