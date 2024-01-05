@@ -28,29 +28,8 @@
         <hr class="mx-auto mb-2 w-[90%] border-tussock-400" />
         <details class="mb-1 p-4" open>
           <summary class="mb-2">My Projects</summary>
-          <div class="max-h-80 overflow-y-auto">
-            <ul>
-              <li
-                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
-              >
-                All
-              </li>
-              <li
-                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
-              >
-                # Project Tag 1
-              </li>
-              <li
-                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
-              >
-                # Project Tag 2
-              </li>
-              <li
-                class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white"
-              >
-                # Project Tag 3
-              </li>
-            </ul>
+          <div class="h-[525px] overflow-y-auto">
+            <ul id="project-list"></ul>
             <form class="" method="post">
               <div class="flex">
                 <input
@@ -113,7 +92,7 @@
       class="overflow-y-auto rounded-tl-2xl border border-slate-200 bg-slate-100 p-4"
     >
       <div class="mb-2 flex items-center justify-between gap-2 p-4">
-        <span class="project-title text-xl font-semibold">All</span>
+        <span id="project-title" class="text-xl font-semibold">All</span>
         <svg
           class="h-7 w-7 rounded-full hover:bg-tussock-400 hover:fill-white active:bg-tussock-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -123,51 +102,7 @@
           <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
         </svg>
       </div>
-      <div
-        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
-      >
-        <div class="row-span-2 self-center justify-self-center">
-          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
-        </div>
-        <div class="">Title</div>
-        <div
-          class="w-24 self-center justify-self-end rounded-xl bg-red-600 text-center text-sm text-white"
-        >
-          High
-        </div>
-        <div class="text-sm">Due Date</div>
-        <div class="text-sm"># Project Tag 1</div>
-      </div>
-      <div
-        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
-      >
-        <div class="row-span-2 self-center justify-self-center">
-          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
-        </div>
-        <div class="">Title</div>
-        <div
-          class="w-24 self-center justify-self-end rounded-xl bg-amber-500 text-center text-sm text-white"
-        >
-          Medium
-        </div>
-        <div class="text-sm">Due Date</div>
-        <div class="text-sm"># Project Tag 2</div>
-      </div>
-      <div
-        class="mb-4 grid grid-cols-[40px_1fr_auto] grid-rows-[repeat(2,1fr)] gap-1 rounded-xl border border-tussock-400 bg-tussock-50 p-2 hover:bg-tussock-400 hover:text-white"
-      >
-        <div class="row-span-2 self-center justify-self-center">
-          <input type="checkbox" class="h-6 w-6 accent-emerald-600" />
-        </div>
-        <div class="">Title</div>
-        <div
-          class="w-24 self-center justify-self-end rounded-xl bg-green-600 text-center text-sm text-white"
-        >
-          Low
-        </div>
-        <div class="text-sm">Due Date</div>
-        <div class="text-sm"># Project Tag 3</div>
-      </div>
+      <div id="task-list"></div>
     </main>
   </body>
   <!-- Form Dialog -->
