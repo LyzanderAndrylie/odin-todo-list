@@ -3,17 +3,43 @@ import { ProjectItem, TaskItem } from '@/components';
 import ProjectTagOption from '@/components/ProjectTagOption';
 import Controller from '@/controllers/controller';
 import { Task, TaskPriority } from '@/models';
+import { format } from 'date-fns';
 import View from './view';
 
+type Bar = 'Today' | 'Upcoming' | 'Archived' | 'My Projects';
+
+type Strategy = () => Task[];
+
 export default class ViewImpl implements View {
-  private controller: Controller;
+  controller: Controller;
 
   projectUUIDActive: string = '';
 
-  currentTaskItemElements: Element[];
+  currentTaskItemElements: Element[] = [];
+
+  currentProjectItemElements: Element[] = [];
+
+  currentBarActive: Bar = 'My Projects';
+
+  findTaskStrategy: Map<Bar, Strategy> = new Map([
+    ['Today', () => this.controller.findAllTaskToday()],
+    ['Upcoming', () => this.controller.findAllTaskUpcoming()],
+    ['Archived', () => this.controller.findAllArchivedTask()],
+    [
+      'My Projects',
+      () =>
+        this.projectUUIDActive === ''
+          ? this.controller.findAllTask()
+          : this.controller.findAllTaskInProject(this.projectUUIDActive),
+    ],
+  ]);
 
   constructor(controller: Controller) {
     this.controller = controller;
+  }
+
+  getTask(): Task[] {
+    return this.findTaskStrategy.get(this.currentBarActive)();
   }
 
   refresh(): void {
@@ -30,11 +56,13 @@ export default class ViewImpl implements View {
 
   addEventListener() {
     ViewImpl.addProjectEventListener();
+    this.addProjectItemEventListener();
     this.addProjectInputEventListener();
     ViewImpl.addTaskEventListener();
     this.addTaskItemEventListener();
     this.addDialogTaskProjectTagOption();
     this.addDialogTaskEventListener();
+    this.addBarEventListener();
   }
 
   static addProjectEventListener() {
@@ -45,6 +73,18 @@ export default class ViewImpl implements View {
       addProjectInput.scrollIntoView();
       addProjectInput.focus();
     };
+  }
+
+  addProjectItemEventListener() {
+    this.currentProjectItemElements.forEach((projectItem) => {
+      const projectItemElement = projectItem as HTMLElement;
+      projectItemElement.onclick = () => {
+        const projectItemUUID = projectItemElement.dataset.uuid;
+        this.projectUUIDActive = projectItemUUID;
+        this.currentBarActive = 'My Projects';
+        this.refresh();
+      };
+    });
   }
 
   addProjectInputEventListener() {
@@ -63,7 +103,15 @@ export default class ViewImpl implements View {
       const projectNameInput = document.getElementById(
         'form-add-project-input',
       ) as HTMLInputElement;
-      const projectNameValue = projectNameInput.value;
+      const formData = new FormData(formAddProject as HTMLFormElement);
+      const projectNameValue = formData.get('project') as string;
+
+      // Check new project name
+      const currentProjectTags = this.controller.findAllProjectTag();
+      if (currentProjectTags.includes(projectNameValue) || projectNameValue === 'All') {
+        alert('New Project Name must be unique');
+        return;
+      }
 
       // Add new project
       this.controller.addProject(projectNameValue);
@@ -88,22 +136,8 @@ export default class ViewImpl implements View {
     };
   }
 
-  addDialogTaskProjectTagOption() {
-    const projectTagSelect = document.getElementById('project-tag');
-    const projects = this.controller.findAllProject();
-
-    projects.forEach((project) => {
-      const projectOptionElement = new ProjectTagOption(
-        project,
-      ).toElement() as HTMLOptionElement;
-      projectTagSelect.appendChild(projectOptionElement);
-    });
-  }
-
   addTaskItemEventListener() {
-    const taskItemElements = this.currentTaskItemElements;
-
-    taskItemElements.forEach((taskItem) => {
+    this.currentTaskItemElements.forEach((taskItem) => {
       const taskItemElement = taskItem as HTMLElement;
       const taskId = taskItemElement.dataset.uuid;
       const task = this.controller.findTask(taskId);
@@ -133,7 +167,8 @@ export default class ViewImpl implements View {
 
       // Fill the dialog with corresponding task information
       taskTitle.textContent = task.title;
-      taskDueDate.textContent = task.dueDate.toDateString();
+      const formattedDate = format(task.dueDate, 'EEEE, d MMMM yyyy — HH:mm');
+      taskDueDate.textContent = formattedDate;
       taskPriority.textContent = task.priority;
       taskStatus.textContent = task.completed ? 'Complete' : 'Incomplete';
       taskDescription.textContent = task.description;
@@ -158,6 +193,10 @@ export default class ViewImpl implements View {
         `rounded-md border p-1 text-white ${taskStatusColor}`,
       );
 
+      const taskCTAButton = document.getElementById('task-cta');
+      taskCTAButton.textContent =
+        this.currentBarActive !== 'Archived' ? 'Archive' : 'Unarchive';
+
       const taskDialog = document.getElementById(
         'task-dialog',
       ) as HTMLDialogElement;
@@ -177,9 +216,30 @@ export default class ViewImpl implements View {
 
         e.preventDefault();
 
-        this.controller.setArchivedForTask(task.uuid, true);
+        this.controller.setArchivedForTask(
+          task.uuid,
+          this.currentBarActive !== 'Archived',
+        );
+        taskDialog.close();
       };
     };
+  }
+
+  addDialogTaskProjectTagOption() {
+    const projectTagSelect = document.getElementById('project-tag');
+    const projects = this.controller.findAllProject();
+
+    projects.forEach((project) => {
+      const projectOptionElement = new ProjectTagOption(
+        project,
+      ).toElement() as HTMLOptionElement;
+      projectTagSelect.appendChild(projectOptionElement);
+
+      // Set default selected option
+      const optionValue = projectOptionElement.value;
+      projectOptionElement.defaultSelected =
+        this.projectUUIDActive === optionValue;
+    });
   }
 
   addDialogTaskEventListener() {
@@ -244,6 +304,39 @@ export default class ViewImpl implements View {
     };
   }
 
+  addBarEventListener() {
+    const todayBar = document.getElementById('today');
+    const upcomingBar = document.getElementById('upcoming');
+    const archivedBar = document.getElementById('archived');
+
+    todayBar.onclick = () => {
+      this.currentBarActive = 'Today';
+      todayBar.setAttribute(
+        'class',
+        'p-4 bg-tussock-500 text-white hover:bg-tussock-600 hover:text-white',
+      );
+      this.refresh();
+    };
+
+    upcomingBar.onclick = () => {
+      this.currentBarActive = 'Upcoming';
+      upcomingBar.setAttribute(
+        'class',
+        'p-4 bg-tussock-500 text-white hover:bg-tussock-600 hover:text-white',
+      );
+      this.refresh();
+    };
+
+    archivedBar.onclick = () => {
+      this.currentBarActive = 'Archived';
+      archivedBar.setAttribute(
+        'class',
+        'p-4 bg-tussock-500 text-white hover:bg-tussock-600 hover:text-white',
+      );
+      this.refresh();
+    };
+  }
+
   addProjectList() {
     const projectListUl = document.getElementById('project-list');
     const projects = this.controller.findAllProject();
@@ -251,22 +344,51 @@ export default class ViewImpl implements View {
       new ProjectItem(project).toElement(),
     );
 
-    projectListUl.appendChild(
-      new ProjectItem(this.controller.getDefaultProject()).toElement(),
-    );
+    const defaultProjectItem = new ProjectItem(
+      this.controller.getDefaultProject(),
+    ).toElement();
 
-    projectItemElemets.forEach((projectItem) =>
-      projectListUl.appendChild(projectItem),
-    );
+    // Add default project item
+    const projectItems: Element[] = [];
+    projectListUl.appendChild(defaultProjectItem);
+    projectItems.push(defaultProjectItem);
+
+    // Set default project item as active
+    if (
+      this.currentBarActive === 'My Projects' &&
+      this.projectUUIDActive === ''
+    ) {
+      defaultProjectItem.setAttribute(
+        'class',
+        'mb-2 rounded-xl p-2 bg-tussock-500 hover:bg-tussock-600 active:bg-tussock-700 text-white',
+      );
+    }
+
+    projectItemElemets.forEach((projectItem) => {
+      projectListUl.appendChild(projectItem);
+
+      // set project item as active
+      const projectItemUUID = (projectItem as HTMLElement).dataset.uuid;
+
+      if (
+        this.currentBarActive === 'My Projects' &&
+        this.projectUUIDActive === projectItemUUID
+      ) {
+        projectItem.setAttribute(
+          'class',
+          'mb-2 rounded-xl p-2 bg-tussock-500 hover:bg-tussock-600 active:bg-tussock-700 text-white',
+        );
+      }
+
+      projectItems.push(projectItem);
+    });
+
+    this.currentProjectItemElements = projectItems;
   }
 
   addTaskList() {
     const taskListDiv = document.getElementById('task-list');
-
-    const tasks =
-      this.projectUUIDActive === ''
-        ? this.controller.findAllTask()
-        : this.controller.findAllTaskInProject(this.projectUUIDActive);
+    const tasks = this.getTask();
     const taskItemElements = tasks.map((task) =>
       new TaskItem(task).toElement(),
     );
@@ -295,6 +417,7 @@ export default class ViewImpl implements View {
     ViewImpl.resetProjectTitle();
     ViewImpl.resetTaskList();
     ViewImpl.resetDialogTaskProjectTagOption();
+    ViewImpl.resetBarActive();
   }
 
   static resetProjectList() {
@@ -315,5 +438,24 @@ export default class ViewImpl implements View {
   static resetDialogTaskProjectTagOption() {
     const projectTagSelect = document.getElementById('project-tag');
     projectTagSelect.innerHTML = '';
+  }
+
+  static resetBarActive() {
+    const todayBar = document.getElementById('today');
+    const upcomingBar = document.getElementById('upcoming');
+    const archivedBar = document.getElementById('archived');
+
+    todayBar.setAttribute(
+      'class',
+      'p-4 hover:bg-tussock-500 active:bg-tussock-500 hover:text-white',
+    );
+    upcomingBar.setAttribute(
+      'class',
+      'p-4 hover:bg-tussock-500 active:bg-tussock-500 hover:text-white',
+    );
+    archivedBar.setAttribute(
+      'class',
+      'p-4 hover:bg-tussock-500 active:bg-tussock-500 hover:text-white',
+    );
   }
 }

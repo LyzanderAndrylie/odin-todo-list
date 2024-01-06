@@ -11,7 +11,7 @@ export default class ProjectItem implements MyElement {
 
   toElement(): Element {
     const htmlString = `
-    <li class="mb-2 rounded-xl p-2 hover:bg-tussock-500 hover:text-white" data-uuid="${this.project.uuid}">
+    <li class="mb-2 rounded-xl p-2 hover:bg-tussock-500 active:bg-tussock-600 hover:text-white" data-uuid="${this.project.uuid}">
     ${this.project.name}
     </li>
     `;

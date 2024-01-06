@@ -30,7 +30,9 @@ export default class ToDoManagerImpl implements ToDoManager {
 
   findAllProjectTag(): string[] {
     const projectTag = this.findAllProject().map((project) => project.name);
-    const projectTagUnique = projectTag.filter((value, index, array) => array.indexOf(value) === index);
+    const projectTagUnique = projectTag.filter(
+      (value, index, array) => array.indexOf(value) === index,
+    );
     return projectTagUnique;
   }
 
@@ -58,12 +60,40 @@ export default class ToDoManagerImpl implements ToDoManager {
   }
 
   findAllTask(): Task[] {
-    return Array.from(this.tasks.values());
+    return Array.from(this.tasks.values()).filter((task) => !task.archived);
   }
 
   findAllTaskInProject(projectUUID: string): Task[] {
     const project = this.findProject(projectUUID);
-    return project.tasks;
+    return project.tasks.filter((task) => !task.archived);
+  }
+
+  findAllTaskToday(): Task[] {
+    const today = new Date();
+    const tasks = this.findAllTask();
+
+    return tasks.filter(
+      (task) =>
+        today.getFullYear() === task.dueDate.getFullYear() &&
+        today.getMonth() === task.dueDate.getMonth() &&
+        today.getDate() === task.dueDate.getDate(),
+    );
+  }
+
+  findAllTaskUpcoming(): Task[] {
+    const today = new Date();
+    const tasks = this.findAllTask();
+
+    return tasks.filter(
+      (task) =>
+        today.getFullYear() !== task.dueDate.getFullYear() ||
+        today.getMonth() !== task.dueDate.getMonth() ||
+        today.getDate() !== task.dueDate.getDate(),
+    );
+  }
+
+  findAllArchivedTask(): Task[] {
+    return Array.from(this.tasks.values()).filter((task) => task.archived);
   }
 
   setCompletedForTask(uuid: string, completed: boolean): void {
@@ -71,8 +101,8 @@ export default class ToDoManagerImpl implements ToDoManager {
     task.completed = completed;
   }
 
-  setArchivedForTask(uuid: string, completed: boolean): void {
+  setArchivedForTask(uuid: string, archived: boolean): void {
     const task = this.findTask(uuid);
-    task.archived = completed;
+    task.archived = archived;
   }
 }

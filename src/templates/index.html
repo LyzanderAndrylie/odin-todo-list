@@ -20,12 +20,25 @@
     </header>
     <aside class="flex h-full flex-col">
       <div class="flex-1">
-        <div class="p-4 hover:bg-tussock-500 hover:text-white">Today</div>
-        <div class="p-4 hover:bg-tussock-500 hover:text-white">Upcoming</div>
-        <div class="mb-2 p-4 hover:bg-tussock-500 hover:text-white">
+        <div
+          id="today"
+          class="p-4 hover:bg-tussock-500 hover:text-white active:bg-tussock-600"
+        >
+          Today
+        </div>
+        <div
+          id="upcoming"
+          class="p-4 hover:bg-tussock-500 hover:text-white active:bg-tussock-600"
+        >
+          Upcoming
+        </div>
+        <div
+          id="archived"
+          class="p-4 hover:bg-tussock-500 hover:text-white active:bg-tussock-600"
+        >
           Archived
         </div>
-        <hr class="mx-auto mb-2 w-[90%] border-tussock-400" />
+        <hr class="mx-auto my-2 mb-2 w-[90%] border-tussock-400" />
         <details class="mb-1 p-4" open>
           <summary class="mb-2">My Projects</summary>
           <div class="h-[525px] overflow-y-auto">
@@ -33,6 +46,7 @@
             <form id="form-add-project" class="hidden" method="post">
               <div class="flex">
                 <input
+                  name="project"
                   id="form-add-project-input"
                   type="text"
                   class="w-full rounded-l-xl border border-slate-200 bg-slate-50 p-1"
@@ -116,7 +130,7 @@
   <!-- Task Form Dialog -->
   <dialog
     id="dialog-add-task"
-    class="rounded-xl p-4 [width:clamp(280px,50vw,400px)] backdrop:bg-slate-400 backdrop:bg-opacity-60"
+    class="rounded-xl p-4 [width:clamp(320px,50vw,400px)] backdrop:bg-slate-400 backdrop:bg-opacity-60"
   >
     <form id="form-add-task">
       <h1 class="mb-6 text-center text-xl font-bold">Add Task</h1>
@@ -231,11 +245,11 @@
       </div>
       <div class="flex gap-4">
         <button
-          class="archive flex-1 rounded-xl bg-tussock-500 p-1 text-white hover:bg-tussock-600 active:bg-tussock-700"
+          id="task-cta"
+          class="flex-1 rounded-xl bg-tussock-500 p-1 text-white hover:bg-tussock-600 active:bg-tussock-700"
           type="submit"
           formmethod="post"
         >
-          Archive
         </button>
         <button
           class="close flex-1 rounded-xl border border-tussock-700 p-1 text-tussock-700 hover:bg-tussock-50 active:bg-tussock-100"

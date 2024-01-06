@@ -16,12 +16,16 @@ export default interface ToDoManager {
   findAllTask(): Task[];
   findAllTaskInProject(projectUUID: string): Task[];
 
+  findAllTaskToday(): Task[];
+  findAllTaskUpcoming(): Task[];
+  findAllArchivedTask(): Task[];
+
   setCompletedForTask(
     uuid: string,
     completed: boolean,
   ): void;
   setArchivedForTask(
     uuid: string,
-    completed: boolean,
+    archived: boolean,
   ): void;
 }

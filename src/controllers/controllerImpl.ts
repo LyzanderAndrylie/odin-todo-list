@@ -46,6 +46,10 @@ export default class ControllerImpl implements Controller {
     return this.toDoManager.findAllProject();
   }
 
+  findAllProjectTag(): string[] {
+    return this.toDoManager.findAllProjectTag();
+  }
+
   findAllTask(): Task[] {
     return this.toDoManager.findAllTask();
   }
@@ -59,10 +63,22 @@ export default class ControllerImpl implements Controller {
   }
 
   findTask(uuid: string): Task {
-      return this.toDoManager.findTask(uuid);
+    return this.toDoManager.findTask(uuid);
+  }
+
+  findAllTaskToday(): Task[] {
+    return this.toDoManager.findAllTaskToday();
+  }
+
+  findAllTaskUpcoming(): Task[] {
+    return this.toDoManager.findAllTaskUpcoming();
+  }
+
+  findAllArchivedTask(): Task[] {
+    return this.toDoManager.findAllArchivedTask();
   }
 
   getDefaultProject(): Project {
-      return this.toDoManager.defaultProject;
+    return this.toDoManager.defaultProject;
   }
 }

@@ -1,5 +1,6 @@
 import { Task } from '@/models/task';
 import { htmlToElement } from '@/utils/converter';
+import {format} from 'date-fns'
 import MyElement from './MyElement';
 
 export default class TaskItem implements MyElement {
@@ -16,6 +17,7 @@ export default class TaskItem implements MyElement {
       High: 'bg-red-600',
     };
     const priorityColor = priorityColorList[this.task.priority];
+    const formattedDate = format(this.task.dueDate, 'dd MMM yyyy — HH:mm');
 
     const htmlString = `
     <div data-uuid="${
@@ -32,7 +34,7 @@ export default class TaskItem implements MyElement {
       <div class="w-24 self-center justify-self-end rounded-xl ${priorityColor} text-center text-sm text-white">
         ${this.task.priority}
       </div>
-      <div class="text-sm">${this.task.dueDate}</div>
+      <div class="text-sm">${formattedDate}</div>
       <div class="text-sm"># ${this.task.projectTag}</div>
     </div>
     `;
