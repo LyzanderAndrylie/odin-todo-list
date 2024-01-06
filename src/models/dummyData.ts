@@ -80,7 +80,7 @@ const gamingTask: Task[] = [
   },
 ];
 
-const tasks: Task[] = [...learningTask, ...gamingTask]
+const tasks: Task[] = [...learningTask, ...gamingTask];
 
 const projects: Project[] = [
   {

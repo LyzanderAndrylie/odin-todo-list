@@ -1,6 +1,6 @@
 import { Task } from '@/models/task';
 import { htmlToElement } from '@/utils/converter';
-import {format} from 'date-fns'
+import { format } from 'date-fns';
 import MyElement from './MyElement';
 
 export default class TaskItem implements MyElement {

@@ -1,11 +1,4 @@
-import {
-  ToDoManager,
-  ToDoManagerImpl,
-  Task,
-  dummyProjects,
-  dummyTasks,
-  Project,
-} from '@/models';
+import { ToDoManager, ToDoManagerImpl, Task, Project } from '@/models';
 import { View, ViewImpl } from '@/views';
 import Controller from './controller';
 
@@ -16,9 +9,7 @@ export default class ControllerImpl implements Controller {
 
   constructor() {
     this.toDoManager = new ToDoManagerImpl();
-    this.toDoManager.projects = dummyProjects;
-    this.toDoManager.tasks = dummyTasks;
-
+    this.toDoManager.loadFromLocalStorage();
     this.view = new ViewImpl(this);
     this.view.createView();
   }

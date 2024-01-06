@@ -1,6 +1,7 @@
-import ToDoManager from './toDoManager';
+import { dummyProjects, dummyTasks } from '../dummyData';
 import { Project } from '../project';
 import { Task } from '../task';
+import ToDoManager from './toDoManager';
 
 export default class ToDoManagerImpl implements ToDoManager {
   defaultProject: Project = { uuid: '', name: 'All', tasks: [] };
@@ -16,6 +17,10 @@ export default class ToDoManagerImpl implements ToDoManager {
       tasks: [],
     };
     this.projects.set(project.uuid, project);
+
+    // Updates the projects' data in localStorage.
+    // Note: For a more advanced approach, consider using decorators.
+    this.saveToLocalStorage();
 
     return project;
   }
@@ -51,6 +56,10 @@ export default class ToDoManagerImpl implements ToDoManager {
 
     project.tasks.push(task);
     this.tasks.set(task.uuid, task);
+
+    // Updates the projects' data in localStorage.
+    // Note: For a more advanced approach, consider using decorators.
+    this.saveToLocalStorage();
 
     return task;
   }
@@ -99,10 +108,49 @@ export default class ToDoManagerImpl implements ToDoManager {
   setCompletedForTask(uuid: string, completed: boolean): void {
     const task = this.findTask(uuid);
     task.completed = completed;
+
+    // Updates the projects' data in localStorage.
+    // Note: For a more advanced approach, consider using decorators.
+    this.saveToLocalStorage();
   }
 
   setArchivedForTask(uuid: string, archived: boolean): void {
     const task = this.findTask(uuid);
     task.archived = archived;
+
+    // Updates the projects' data in localStorage.
+    // Note: For a more advanced approach, consider using decorators.
+    this.saveToLocalStorage();
+  }
+
+  loadFromLocalStorage(): void {
+    const projectsJSON = localStorage.getItem('projects');
+    if (!projectsJSON) {
+      this.populateLocalStorageWithDummyData();
+      return;
+    }
+
+    // Populate projects and tasks
+    const projects = JSON.parse(projectsJSON) as Project[];
+    projects.forEach((project) => {
+      this.projects.set(project.uuid, project);
+
+      project.tasks.forEach((task) => {
+        task.dueDate = new Date(task.dueDate);
+        this.tasks.set(task.uuid, task);
+      });
+    });
+  }
+
+  populateLocalStorageWithDummyData(): void {
+    this.projects = dummyProjects;
+    this.tasks = dummyTasks;
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage(): void {
+    const projectArray = Array.from(this.projects.values());
+    const projectArrayJSON = JSON.stringify(projectArray);
+    localStorage.setItem('projects', projectArrayJSON);
   }
 }

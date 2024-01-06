@@ -108,7 +108,10 @@ export default class ViewImpl implements View {
 
       // Check new project name
       const currentProjectTags = this.controller.findAllProjectTag();
-      if (currentProjectTags.includes(projectNameValue) || projectNameValue === 'All') {
+      if (
+        currentProjectTags.includes(projectNameValue) ||
+        projectNameValue === 'All'
+      ) {
         alert('New Project Name must be unique');
         return;
       }

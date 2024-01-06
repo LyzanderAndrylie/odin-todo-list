@@ -1,10 +1,11 @@
+import LocalStorageSaveable from '@/utils/localStorageSaveable';
 import { Project } from '../project';
 import { Task } from '../task';
 
-export default interface ToDoManager {
+export default interface ToDoManager extends LocalStorageSaveable {
   defaultProject: Project;
   projects: Map<string, Project>;
-  tasks: Map<string, Task>
+  tasks: Map<string, Task>;
 
   createProject(name: string): Project;
   findProject(uuid: string): Project;
@@ -20,12 +21,6 @@ export default interface ToDoManager {
   findAllTaskUpcoming(): Task[];
   findAllArchivedTask(): Task[];
 
-  setCompletedForTask(
-    uuid: string,
-    completed: boolean,
-  ): void;
-  setArchivedForTask(
-    uuid: string,
-    archived: boolean,
-  ): void;
+  setCompletedForTask(uuid: string, completed: boolean): void;
+  setArchivedForTask(uuid: string, archived: boolean): void;
 }
