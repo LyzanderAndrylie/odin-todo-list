@@ -6,7 +6,7 @@ Simple Todo List created with JavaScript. This program utilize `localStorage` to
 
 Check out here! :smile:
 
-:link: TBA
+:link: <https://lyzanderandrylie.github.io/odin-todo-list/index.html>
 
 ## Requirements
 
@@ -18,6 +18,7 @@ List of resources that helped me to create this project:
 
 1. <https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API>
 2. <https://stackoverflow.com/questions/29293302/button-position-absolute-not-working-as-expected>
+3. <https://date-fns.org/>
 
 ### `flex-1` vs `w-full` in `<input type="text">` element
 
@@ -42,3 +43,7 @@ Somehow the code below (`flex-1` vs `w-full`) gives different results/behaviour 
     />
 <div>
 ```
+
+### Improvement for this project
+
+The implementation of the loadFromLocalStorage() and saveToLocalStorage() methods in the ToDoManagerImpl class could be refactored using decorators. However, due to time limitations for this project's implementation, the author chose to implement these functionalities in a simpler manner, without employing decorators.
